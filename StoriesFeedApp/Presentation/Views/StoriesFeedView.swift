@@ -14,23 +14,30 @@ struct StoriesFeedView: View {
     @State private var selectedStory: Story?
 
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            LazyHStack(spacing: 12) {
-                StoryItem(
-                    story: .init(imageURL: "https://picsum.photos/1080/1920?random=123"),
-                    onTap: {
-                        print("On tapped")
+
+        // Hanldes empty state for users
+        if stories.isEmpty {
+            ContentUnavailableView(
+                "No Stories",
+                systemImage: "photo.on.rectangle.angled",
+                description: nil
+            )
+        } else {
+            ScrollView(.horizontal, showsIndicators: false) {
+                LazyHStack(spacing: 12) {
+                    ForEach(stories) { story in
+                        StoryItem(
+                            story: story) {
+                                selectedStory = story
+                            }
                     }
-                )
-                StoryItem(
-                    story: .init(imageURL: "https://picsum.photos/1080/1920?random=123"),
-                    onTap: {
-                        print("On tapped")
-                    }
-                )
+                }
+                .padding(.horizontal)
+                .padding(.vertical)
             }
-            .padding(.horizontal)
-            .padding(.vertical)
+            .sheet(item: $selectedStory) { story in
+                StoryViewerView(story: story)
+            }
         }
     }
 }

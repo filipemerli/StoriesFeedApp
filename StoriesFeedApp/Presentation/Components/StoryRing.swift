@@ -10,9 +10,10 @@ import SwiftUI
 struct StoryRing: View {
 
     var isSeen: Bool = false
+    var url: String
 
     var body: some View {
-        StoryThumbnailImage()
+        StoryThumbnailImage(url: url)
             .padding(6)
             .overlay(
                 Circle()
@@ -30,5 +31,5 @@ struct StoryRing: View {
 }
 
 #Preview {
-    StoryRing()
+    StoryRing(url: "https://picsum.photos/1080/1920?random=123")
 }

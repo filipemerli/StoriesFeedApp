@@ -27,6 +27,13 @@ struct StoriesFeedAppApp: App {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(sharedModelContainer)
+        .modelContainer(for: Story.self) { result in
+            if case .success(let container) = result {
+                let context = ModelContext(container)
+                let repository = StoryRepository(modelContext: context)
+                let provider = StoryProvider(repository: repository)
+                provider.provideIfNeeded()
+            }
+        }
     }
 }

@@ -10,16 +10,25 @@ import SwiftUI
 
 struct StoryThumbnailImage: View {
 
-    static let mockURL = "https://picsum.photos/1080/1920?random=123"
+    let url: String
+
     var body: some View {
-        KFImage.url(URL(string: StoryThumbnailImage.mockURL)!)
+        if let validUrl = URL(string: url) {
+            KFImage.url(validUrl)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(minWidth: 80, minHeight: 80)
+                .clipShape(Circle())
+        } else {
+            Image(systemName: "xmark")
             .resizable()
             .aspectRatio(contentMode: .fill)
             .frame(minWidth: 80, minHeight: 80)
             .clipShape(Circle())
+        }
     }
 }
 
 #Preview {
-    StoryThumbnailImage()
+    StoryThumbnailImage(url: "https://picsum.photos/1080/1920?random=123")
 }

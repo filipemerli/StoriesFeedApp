@@ -13,11 +13,9 @@ struct StoryItem: View {
     let onTap: () -> Void
 
     var body: some View {
-        StoryRing(isSeen: story.isSeen)
+        StoryRing(isSeen: story.isSeen, url: story.imageURL)
             .frame(minWidth: 130, minHeight: 130)
-            .onTapGesture {
-                onTap()
-            }
+            .onTapGesture { onTap() }
     }
 }
 
