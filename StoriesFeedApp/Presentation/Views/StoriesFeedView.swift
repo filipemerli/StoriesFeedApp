@@ -12,6 +12,7 @@ struct StoriesFeedView: View {
     
     @Query private var stories: [Story]
     @State private var selectedStory: Story?
+    @State private var viewModel: StoriesFeedViewModel?
 
     var body: some View {
 
@@ -25,11 +26,16 @@ struct StoriesFeedView: View {
         } else {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 12) {
-                    ForEach(stories) { story in
-                        StoryItem(
-                            story: story) {
-                                selectedStory = story
-                            }
+                    if let viewModel {
+                        ForEach(viewModel.displayedStories) { story in
+                            StoryItem(
+                                story: story) {
+                                    selectedStory = story
+                                }
+                                .onAppear {
+                                    viewModel.loadMoreIfNeeded(currentStory: story)
+                                }
+                        }
                     }
                 }
                 .padding(.horizontal)
