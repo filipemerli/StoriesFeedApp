@@ -14,7 +14,10 @@ struct StoryThumbnailImage: View {
 
     var body: some View {
         if let validUrl = URL(string: url) {
-            KFImage.url(validUrl)
+            KFImage(validUrl)
+                .placeholder {
+                    ProgressView()
+                }
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(minWidth: 80, minHeight: 80)

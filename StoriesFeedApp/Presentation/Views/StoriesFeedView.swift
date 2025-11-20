@@ -10,7 +10,7 @@ import SwiftUI
 
 struct StoriesFeedView: View {
     
-    @Query private var stories: [Story]
+    @Query(sort: \Story.createdAt, order: .forward) private var stories: [Story]
     @State private var selectedStory: Story?
     @State private var viewModel: StoriesFeedViewModel?
 

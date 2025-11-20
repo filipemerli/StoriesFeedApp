@@ -12,6 +12,7 @@ final class StoriesFeedViewModel {
     private(set) var displayedStories: [Story] = []
     private let allStories: [Story]
     private let bufferSize: Int
+    private var currentOffset = 0
 
     init(stories: [Story], bufferSize: Int = 20) {
         self.allStories = stories
@@ -30,7 +31,20 @@ final class StoriesFeedViewModel {
 
     private func loadMoreStories() {
         guard !allStories.isEmpty else { return }
-        let newStories = Array(allStories.prefix(bufferSize))
+
+        let newStories: [Story] = (0..<bufferSize).compactMap { index in
+            let storyIndex = (currentOffset + index) % allStories.count
+            let original = allStories[storyIndex]
+
+            return Story(
+                id: UUID(),
+                imageURL: original.imageURL,
+                isSeen: original.isSeen,
+                isLiked: original.isLiked
+            )
+        }
+        
         displayedStories.append(contentsOf: newStories)
+        currentOffset += bufferSize
     }
 }
