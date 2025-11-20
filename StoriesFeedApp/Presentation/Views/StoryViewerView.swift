@@ -5,24 +5,37 @@
 //  Created by Filipe Merli on 20/11/2025.
 //
 
+import Kingfisher
+import SwiftData
 import SwiftUI
 
 struct StoryViewerView: View {
 
+    @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
-    @State var story: Story?
+    let story: Story
 
-    var body: some View {
-        ZStack(alignment: .topTrailing) {
-            Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-        }
-//        .presentationDetents([.large])
-        .presentationCornerRadius(0)
-        .edgesIgnoringSafeArea(.all)
+    private var storyService: StoryService {
+        StoryService(modelContext: modelContext)
     }
 
+    var body: some View {
+        ZStack {
+
+            KFImage(URL(string: story.imageURL))
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .ignoresSafeArea()
+            StoryCloseButton {
+                dismiss()
+            }.padding(.horizontal)
+        }
+
+        .presentationDetents([.large])
+        .presentationCornerRadius(0)
+    }
 }
 
 #Preview {
-    StoryViewerView(story: nil)
+    StoryViewerView(story: Story(imageURL: "https://picsum.photos/1080/1920?random=123"))
 }
