@@ -16,25 +16,7 @@ struct ContentView: View {
         VStack {
             Text("Stories Like Feature")
                 .font(.title2).bold()
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
-                    Circle()
-                        .frame(width: 130, height: 130)
-                    StoryItem(
-                        story: .init(imageURL: "https://picsum.photos/1080/1920?random=123"),
-                        onTap: {
-                            print("On tapped")
-                        }
-                    )
-                    Circle()
-                    Circle()
-                    Circle()
-                    Circle()
-                        .frame(width: 130, height: 130)
-                }
-                .padding(.horizontal)
-                .padding(.vertical)
-            }
+            StoriesFeedView()
             .frame(height: 145)
             Rectangle()
         }
