@@ -23,6 +23,15 @@ struct StoryViewerView: View {
         ZStack {
 
             KFImage(URL(string: story.imageURL))
+                .placeholder {
+                    ZStack {
+                        Circle()
+                            .fill(Color.gray.opacity(0.2))
+                        ProgressView()
+                            .tint(.gray)
+                    }
+                    .frame(width: 80, height: 80)
+                }
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .ignoresSafeArea()

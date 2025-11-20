@@ -41,6 +41,12 @@ struct StoriesFeedView: View {
                 .padding(.horizontal)
                 .padding(.vertical)
             }
+            .onAppear {
+                if viewModel == nil {
+                    viewModel = StoriesFeedViewModel(stories: stories)
+                    viewModel?.loadInitialStories()
+                }
+            }
             .sheet(item: $selectedStory) { story in
                 StoryViewerView(story: story)
             }
