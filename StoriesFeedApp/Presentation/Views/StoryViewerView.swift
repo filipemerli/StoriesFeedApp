@@ -29,8 +29,17 @@ struct StoryViewerView: View {
             StoryCloseButton {
                 dismiss()
             }.padding(.horizontal)
-        }
+            StoryLikeButton(
+                onTap: {
+                    storyService.toggleLike(story: story)
 
+                },
+                isLiked: story.isLiked
+            )
+        }
+        .onAppear {
+            storyService.markAsSeen(story: story)
+        }
         .presentationDetents([.large])
         .presentationCornerRadius(0)
     }
