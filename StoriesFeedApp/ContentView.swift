@@ -10,52 +10,38 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @Query private var stories: [Story]
 
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
+        VStack {
+            Text("Stories Like Feature")
+                .font(.title2).bold()
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                    Circle()
+                        .frame(width: 130, height: 130)
+                    StoryItem(
+                        story: .init(imageURL: "https://picsum.photos/1080/1920?random=123"),
+                        onTap: {
+                            print("On tapped")
+                        }
+                    )
+                    Circle()
+                    Circle()
+                    Circle()
+                    Circle()
+                        .frame(width: 130, height: 130)
                 }
-                .onDelete(perform: deleteItems)
+                .padding(.horizontal)
+                .padding(.vertical)
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
-            }
-        } detail: {
-            Text("Select an item")
-        }
-    }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
-            }
+            .frame(height: 145)
+            Rectangle()
         }
     }
 }
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+        .modelContainer(for: Story.self, inMemory: true)
 }
