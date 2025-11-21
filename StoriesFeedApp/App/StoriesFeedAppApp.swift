@@ -10,30 +10,42 @@ import SwiftData
 
 @main
 struct StoriesFeedAppApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Story.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+
+    private let sharedModelContainer: ModelContainer
+    private let appDependencies: AppDependencies
+
+    init() {
+        // Initialize ModelContainer
+        let schema = Schema([Story.self])
+        let modelConfiguration = ModelConfiguration(
+            schema: schema,
+            isStoredInMemoryOnly: false
+        )
 
         do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+            let container = try ModelContainer(
+                for: schema,
+                configurations: [modelConfiguration]
+            )
+            self.sharedModelContainer = container
+
+            let context = ModelContext(container)
+            self.appDependencies = AppDependencies(modelContext: context)
+
+            let repository = StoryRepository(modelContext: context)
+            let provider = StoryProvider(repository: repository)
+            provider.provideIfNeeded()
+
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
-    }()
+    }
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            /// I'm assuming ContentView has a Coordinator like responsability for this prototype
+            ContentView(appDependencies: appDependencies)
         }
-        .modelContainer(for: Story.self) { result in
-            if case .success(let container) = result {
-                let context = ModelContext(container)
-                let repository = StoryRepository(modelContext: context)
-                let provider = StoryProvider(repository: repository)
-                provider.provideIfNeeded()
-            }
-        }
+        .modelContainer(sharedModelContainer)
     }
 }

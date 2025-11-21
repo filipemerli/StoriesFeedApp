@@ -11,6 +11,7 @@ struct StoryFactory {
     static func generateMockStories(count: Int) -> [Story] {
         (1...count).map { index in
             Story(
+                id: UUID(),
                 imageURL: "https://picsum.photos/1080/1920?random=\(index)",
                 isSeen: false,
                 isLiked: false

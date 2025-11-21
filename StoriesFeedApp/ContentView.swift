@@ -6,24 +6,17 @@
 //
 
 import SwiftUI
-import SwiftData
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var stories: [Story]
+    let appDependencies: AppDependencies
 
     var body: some View {
         VStack {
             Text("Stories Like Feature")
                 .font(.title2).bold()
-            StoriesFeedView()
+            StoriesFeedView(viewModel: appDependencies.makeStoriesFeedViewModel())
             .frame(height: 145)
             Rectangle()
         }
     }
-}
-
-#Preview {
-    ContentView()
-        .modelContainer(for: Story.self, inMemory: true)
 }

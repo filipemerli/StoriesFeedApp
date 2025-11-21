@@ -25,5 +25,4 @@ final class StoryProvider {
         let mockStories = StoryFactory.generateMockStories(count: 50)
         mockStories.forEach { repository.save($0) }
     }
-
 }
